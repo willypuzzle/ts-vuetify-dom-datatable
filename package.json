@@ -1,0 +1,40 @@
+{
+  "author": {
+    "name": "Domenico Rizzo",
+    "email": "domenico.rizzo@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/willypuzzle/ts-vuetify-dom-datatable/issues"
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "vuetify": "^0.16.8",
+    "lodash": "^4.17.4"
+  },
+  "description": "Typescript augmented vuetify datatable",
+  "devDependencies": {},
+  "directories": {},
+  "homepage": "https://github.com/willypuzzle/ts-vuetify-dom-datatable",
+  "keywords": [
+    "datatable",
+    "vuetify"
+  ],
+  "license": "ISC",
+  "main": "Datatable.vue",
+  "maintainers": [
+    {
+      "name": "willypuzzle",
+      "email": "domenico.rizzo@gmail.com"
+    }
+  ],
+  "name": "ts-vuetify-dom-datatable",
+  "optionalDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/willypuzzle/ts-vuetify-dom-datatable.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.0.1"
+}
