@@ -216,6 +216,11 @@
     interface TransportCreate {
         data: TransportCreateData;
         url: string;
+        errors?: {
+            codes?: {
+                disabled?: Array<number>
+            }
+        }
     }
 
     interface TransportDelete {
@@ -442,7 +447,17 @@
                     }).catch((err) => {
                         console.trace();
                         console.log(err)
-                        this.generalErrorDialog = true;
+                        let disableDialog = false;
+                        let codeErrors = _.get(this, 'transport.create.errors.codes.disabled', null);
+                        if(err.response && codeErrors){
+                            let code = err.response.status;
+                            _.each(codeErrors, (el) => {
+                                if(el === code){
+                                    disableDialog = true;
+                                }
+                            })
+                        }
+                        this.generalErrorDialog = !disableDialog && true;
                         this.$emit('created-error', err);
                     }).then(() => {
                         this.creationInProgress = false;
