@@ -120,6 +120,7 @@
                     <tr :active="props.selected" >
                         <td v-if="checkable">
                             <v-checkbox
+                                    v-if="!props.item.datatable_no_deletable_item"
                                     primary
                                     class="primary--text"
                                     hide-details
@@ -132,7 +133,7 @@
                                 :index="props.index"
                                 :item="props.item"
                                 :edit="dt_updateField"
-                                :delete="dt_delete"
+                                :delete="!props.item.datatable_no_deletable_item ? dt_delete : null"
                         ></slot>
                     </tr>
                 </template>
@@ -525,7 +526,7 @@
             },
             dt_updateField(item, field, val, validator? : string) {
                 // Bug vuetify
-                if (_.isObject(val))
+                if (_.isObject(val) && !_.isArray(val))
                     return false;
 
                 field = field.split(":");
