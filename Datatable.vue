@@ -2,7 +2,7 @@
     <div style="width: 100%;">
         <v-card class="datatable_search">
             <v-card-title>
-                <v-dialog v-if="add" v-model="addDialog" persistent>
+                <v-dialog v-if="add" v-model="addDialog" persistent :max-width="addWindowMaxWidth">
                     <v-btn icon color="primary" dark slot="activator" >
                         <v-icon dark>add</v-icon>
                     </v-btn>
@@ -329,6 +329,10 @@
             add: {
                 type: Boolean,
                 default: true
+            },
+            addWindowMaxWidth: {
+                type: String,
+                default: '500px'
             },
             checkable: {
                 type: Boolean,
