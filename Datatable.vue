@@ -255,6 +255,7 @@
         checkbox?: boolean;
         class?: string;
         field?: string;
+        searchable?: boolean;
         sortable?: boolean;
         text: string;
         value: string;
