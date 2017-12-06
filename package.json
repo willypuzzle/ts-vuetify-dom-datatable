@@ -9,6 +9,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "dom-validator": "^1.1.1",
+    "ts-vue-dom-helper": ">=0.2.1-alpha.0",
     "vuetify": "^0.17.1",
     "lodash": "^4.17.4"
   },
@@ -37,5 +38,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "0.1.0-alpha.1"
+  "version": "0.1.0-alpha.5"
 }

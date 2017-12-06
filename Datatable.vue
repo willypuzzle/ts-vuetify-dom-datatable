@@ -2,10 +2,10 @@
     <div style="width: 100%;">
         <v-card class="datatable_search">
             <v-card-title>
+                <v-btn v-if="add" icon color="primary" dark @click="activeAdd">
+                    <v-icon dark>add</v-icon>
+                </v-btn>
                 <v-dialog v-if="add" v-model="addDialog" persistent :max-width="addWindowMaxWidth">
-                    <v-btn icon color="primary" dark slot="activator" >
-                        <v-icon dark>add</v-icon>
-                    </v-btn>
                     <v-card>
                         <v-card-title>
                             <span class="headline">
@@ -198,16 +198,9 @@
     import messages from './i18n/messages';
     import axios, {AxiosStatic} from 'axios'
     import _ from 'lodash'
+    import {GENERAL_HELPER} from 'ts-vue-dom-helper';
 
-    let clone = (obj) : any => {
-        if(Array.isArray(obj)){
-            return obj.slice(0)
-        }else if(obj !== null && typeof obj === 'object'){
-            return _.extend({}, obj);
-        }else{
-            return obj;
-        }
-    }
+    let clone = GENERAL_HELPER.clone;
 
     interface TransportCreateData {
         models: object;
@@ -410,6 +403,12 @@
             }
         },
         methods: {
+            activeAdd(){
+                this.resetCreateData();
+                this.$nextTick(() => {
+                    this.addDialog = true;
+                })
+            },
             changeSort(column : Header) {
                 let sortBy = column.value;
 
@@ -629,7 +628,7 @@
                 let createData = this.transport.create.data.models;
                 let defaults = this.transport.create.data.defaults || {};
                 for(let index in createData){
-                    createData[index] = defaults[index] !== undefined ? defaults[index] : null;
+                    createData[index] = defaults[index] !== undefined ? clone(defaults[index]) : null;
                 }
             },
             sort(value, sortable){
