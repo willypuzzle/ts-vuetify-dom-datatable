@@ -29,7 +29,7 @@
                         </slot>
                     </v-card>
                 </v-dialog>
-                <v-dialog v-if="!disableDelete && selected.length > 0" v-model="deleteDialog" persistent>
+                <v-dialog v-if="!disableDelete && selected.length > 0" v-model="deleteDialog" persistent max-width="600px">
                     <v-btn icon error dark slot="activator">
                         <v-icon dark>delete</v-icon>
                     </v-btn>
@@ -100,9 +100,15 @@
                                     :indeterminate="props.indeterminate"
                             ></v-checkbox>
                         </th>
-                        <th class="white--text" :width="header.width || ''" v-for="header in props.headers" :key="header.text"
-                            :class="[header.sortable !== false ? 'column sortable' : '', pagination.descending ? 'desc' : 'asc', header.align ? `text-xs-${header.align}` : '', header.value === pagination.sortBy ? 'active' : '', header.class ? header.class : '']" :style="header.style"
-                            @click.prevent.stop="sort(header.value, header.sortable !== false)"
+                        <th
+                                v-for="header in props.headers"
+                                v-if="!header.hidden"
+                                class="white--text"
+                                :width="header.width || ''"
+                                :key="header.text"
+                                :class="[header.sortable !== false ? 'column sortable' : '', pagination.descending ? 'desc' : 'asc', header.align ? `text-xs-${header.align}` : '', header.value === pagination.sortBy ? 'active' : '', header.class ? header.class : '']"
+                                :style="header.style"
+                                @click.prevent.stop="sort(header.value, header.sortable !== false)"
                         >
                             <v-icon dark class="yellow--text accent-4" v-if="header.sortable !== false">arrow_upward</v-icon>
                             <v-tooltip bottom>
@@ -139,7 +145,7 @@
                 </template>
             </v-data-table>
         </v-card>
-        <v-dialog v-if="!disableGeneralError" v-model="generalErrorDialog">
+        <v-dialog v-if="!disableGeneralError" v-model="generalErrorDialog" max-width="600px">
             <v-card>
                 <v-card-title>
                     <slot name="general_error_title">
@@ -163,7 +169,7 @@
                 </slot>
             </v-card>
         </v-dialog>
-        <v-dialog v-model="singleDeleteDialog" persistent>
+        <v-dialog v-model="singleDeleteDialog" persistent max-width="600px">
             <v-card>
                 <v-card-title>
                     <slot name="single_delete_title">
@@ -433,7 +439,7 @@
                 this.pagination = pagination;
             }, this.debounceSearchTime),
             dt_create() {
-                let creationFunction = () => {
+                let creationFunction = ($validator?) => {
                     let url = this.transport.create.url || false;
                     if (!url){
                         return false;
@@ -463,6 +469,9 @@
                             })
                         }
                         this.generalErrorDialog = !disableDialog && true;
+                        if($validator && err.response && err.response.data){
+                            $validator.setErrors(err.response.data);
+                        }
                         this.$emit('created-error', err);
                     }).then(() => {
                         this.creationInProgress = false;
@@ -474,7 +483,7 @@
                 if(parent.$validator && parent.$validator.validateAll){
                     parent.$validator.validateAll().then((response) => {
                         if(response){
-                            creationFunction();
+                            creationFunction(parent.$validator);
                         }
                     })
                 }else{
