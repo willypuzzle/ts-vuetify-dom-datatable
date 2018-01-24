@@ -637,7 +637,7 @@
                 let createData = this.transport.create.data.models;
                 let defaults = this.transport.create.data.defaults || {};
                 for(let index in createData){
-                    createData[index] = defaults[index] !== undefined ? clone(defaults[index]) : null;
+                    createData[index] = defaults[index] !== undefined ? clone(defaults[index]) : undefined;
                 }
             },
             sort(value, sortable){
