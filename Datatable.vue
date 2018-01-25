@@ -267,6 +267,7 @@
         axios: AxiosStatic;
         cacheDeleteItem: any;
         checkable: boolean;
+        checkCodeErrors: Function;
         configuration: any;
         creationInProgress: boolean;
         debounceSearchTime: number;
@@ -432,6 +433,19 @@
                     this.pagination.descending = false;
                 }
             },
+            checkCodeErrors(err, codeErrors){
+                let c = false;
+                if(err.response && codeErrors){
+                    let code = err.response.status;
+                    _.each(codeErrors, (el) => {
+                        if(el === code){
+                            c = true;
+                        }
+                    })
+                }
+
+                return c;
+            },
             debounceSearch: _.debounce(function (value) {
                 this.searching = value;
                 let pagination = clone(this.pagination);
@@ -458,16 +472,7 @@
                     }).catch((err) => {
                         console.trace();
                         console.log(err)
-                        let disableDialog = false;
-                        let codeErrors = _.get(this, 'transport.create.errors.codes.disabled', null);
-                        if(err.response && codeErrors){
-                            let code = err.response.status;
-                            _.each(codeErrors, (el) => {
-                                if(el === code){
-                                    disableDialog = true;
-                                }
-                            })
-                        }
+                        let disableDialog = this.checkCodeErrors(err, _.get(this, 'transport.create.errors.codes.disabled', null));
                         this.generalErrorDialog = !disableDialog && true;
                         if($validator && err.response && err.response.data){
                             $validator.setErrors(err.response.data);
@@ -511,7 +516,8 @@
                 }).catch((err) => {
                     console.trace();
                     console.log(err);
-                    this.generalErrorDialog = true;
+                    let disableDialog = this.checkCodeErrors(err, _.get(this, 'transport.multi_delete.errors.codes.disabled', null));
+                    this.generalErrorDialog = !disableDialog && true;
                     this.$emit('multi-deleted-error', err);
                 }).then(() => {
                     this.deletionInProgress = false;
@@ -531,7 +537,8 @@
                 }).catch((err) => {
                     console.trace();
                     console.log(err);
-                    this.generalErrorDialog = true;
+                    let disableDialog = this.checkCodeErrors(err, _.get(this, 'transport.delete.errors.codes.disabled', null));
+                    this.generalErrorDialog = !disableDialog && true;
                     this.$emit('deleted-error', err);
                 }).then(() => {
                     this.loading = false;
@@ -558,7 +565,8 @@
                     }).catch(err => {
                         console.trace();
                         console.log(err);
-                        this.generalErrorDialog = true;
+                        let disableDialog = this.checkCodeErrors(err, _.get(this, 'transport.update.errors.codes.disabled', null));
+                        this.generalErrorDialog = !disableDialog && true;
                         this.$emit('update-error', err);
                     }).then(() => {
                         this.loading = false;
@@ -613,6 +621,7 @@
                 params['search'] = {
                     value: this.searching
                 };
+                params['locale'] = this.locale;
                 params = _.assign(params, this.getColumns());
                 return query_string ? "?" + Object.keys(params).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`).join('&') : params;
             },
