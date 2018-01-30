@@ -253,7 +253,9 @@
         align?: string;
         checkbox?: boolean;
         class?: string;
+        fallback: string;
         field?: string;
+        json: string;
         searchable?: boolean;
         sortable?: boolean;
         text: string;
@@ -599,7 +601,9 @@
                     columns.push(
                         {
                             name: el.field || el.value,
-                            searchable: el.searchable !== undefined ? el.searchable : !el.checkbox
+                            searchable: el.searchable !== undefined ? el.searchable : !el.checkbox,
+                            json: el.json || false,
+                            fallback: el.fallback || false
                         }
                     )
                 });
