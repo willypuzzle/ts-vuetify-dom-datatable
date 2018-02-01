@@ -30,7 +30,7 @@
                     </v-card>
                 </v-dialog>
                 <v-dialog v-if="!disableDelete && selected.length > 0" v-model="deleteDialog" persistent max-width="600px">
-                    <v-btn icon error dark slot="activator">
+                    <v-btn icon color="error" dark slot="activator">
                         <v-icon dark>delete</v-icon>
                     </v-btn>
                     <v-card>
