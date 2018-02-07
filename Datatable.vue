@@ -58,7 +58,7 @@
                         </slot>
                     </v-card>
                 </v-dialog>
-                <slot name="custom_actions">
+                <slot name="custom_actions" :datatable="this" :config="config">
 
                 </slot>
                 <v-spacer></v-spacer>
@@ -388,6 +388,7 @@
                 creationInProgress: false,
                 deleteDialog: false,
                 deletionInProgress: false,
+                extra: {},
                 generalErrorDialog: false,
                 items: [],
                 loading: false,
@@ -622,6 +623,7 @@
                 let params = {};
                 params['sort'] = clone(this.pagination);
                 params['sort'].sortBy = this.getSortColumn(params['sort'].sortBy);
+                params['extra'] = this.config.extra;
                 params['search'] = {
                     value: this.searching
                 };

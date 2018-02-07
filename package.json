@@ -12,10 +12,18 @@
     "lodash": "^4.17.4",
     "randomstring": "^1.1.5",
     "ts-vue-dom-helper": ">=0.2.1-alpha.0",
+    "vue": "^2.5.13",
     "vuetify": "^0.17.1"
   },
   "description": "Typescript augmented vuetify datatable",
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-ts": "^6.0.0-beta.17",
+    "transvueify": "0.0.4",
+    "transvueify-plugin-typescript": "^1.0.3",
+    "typescript": "^2.7.1"
+  },
   "directories": {},
   "homepage": "https://github.com/willypuzzle/ts-vuetify-dom-datatable",
   "keywords": [
@@ -39,5 +47,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "0.1.0-alpha.20"
+  "version": "1.0.0-alpha.0"
 }

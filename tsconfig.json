@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "es2015",
+    "moduleResolution": "node",
+    "target": "es5",
+    "noImplicitAny": false,
+    "sourceMap": false,
+    "allowSyntheticDefaultImports": true,
+    "lib": [
+      "es6",
+      "dom",
+      "es5",
+      "es2015.promise"
+    ]
+  },
+  "include": [
+
+  ]
+}
