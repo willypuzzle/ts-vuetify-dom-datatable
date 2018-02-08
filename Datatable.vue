@@ -2,6 +2,9 @@
     <div style="width: 100%;">
         <v-card class="datatable_search">
             <v-card-title>
+                <slot name="custom_actions" :datatable="thisObject" :config="config">
+
+                </slot>
                 <v-btn v-if="add" icon color="primary" dark @click="activeAdd">
                     <v-icon dark>add</v-icon>
                 </v-btn>
@@ -58,9 +61,6 @@
                         </slot>
                     </v-card>
                 </v-dialog>
-                <slot name="custom_actions" :datatable="this" :config="config">
-
-                </slot>
                 <v-spacer></v-spacer>
                 <v-text-field
                         append-icon="search"
@@ -214,7 +214,7 @@
     }
 
     interface TransportCreate {
-        data: TransportCreateData;
+        data?: TransportCreateData;
         url: string;
         errors?: {
             codes?: {
@@ -346,7 +346,8 @@
                 default(){
                     return {
                         pagination: {
-                            rowsPerPage: 10
+                            rowsPerPage: 10,
+                            descending: false
                         }
                     }
                 }
@@ -382,9 +383,11 @@
         },
         data(){
             return {
+                thisObject: this,
                 addDialog: false,
                 axios: this.transport.axios || axios,
                 cacheDeleteItem: null,
+                config: {},
                 creationInProgress: false,
                 deleteDialog: false,
                 deletionInProgress: false,
@@ -394,7 +397,7 @@
                 loading: false,
                 noDataText: '',
                 noResultsText: '',
-                pagination: this.configuration.pagination,
+                pagination: clone(this.configuration.pagination),
                 rowsPerPageItems: [],
                 rowsPerPageText: '',
                 searching: '',
@@ -649,6 +652,9 @@
                 });
             },
             resetCreateData(){
+                if(!this.transport.create.data){
+                    return;
+                }
                 let createData = this.transport.create.data.models;
                 let defaults = this.transport.create.data.defaults || {};
                 for(let index in createData){

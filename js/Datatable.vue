@@ -2,6 +2,9 @@
 <div style="width: 100%;">
     <v-card class="datatable_search">
         <v-card-title>
+            <slot name="custom_actions" :datatable="thisObject" :config="config">
+
+            </slot>
             <v-btn v-if="add" icon color="primary" dark @click="activeAdd">
                 <v-icon dark>add</v-icon>
             </v-btn>
@@ -58,9 +61,6 @@
                     </slot>
                 </v-card>
             </v-dialog>
-            <slot name="custom_actions" :datatable="this" :config="config">
-
-            </slot>
             <v-spacer></v-spacer>
             <v-text-field
                     append-icon="search"
@@ -236,7 +236,8 @@ export default {
             default: function () {
                 return {
                     pagination: {
-                        rowsPerPage: 10
+                        rowsPerPage: 10,
+                        descending: false
                     }
                 };
             }
@@ -272,9 +273,11 @@ export default {
     },
     data: function () {
         return {
+            thisObject: this,
             addDialog: false,
             axios: this.transport.axios || axios,
             cacheDeleteItem: null,
+            config: {},
             creationInProgress: false,
             deleteDialog: false,
             deletionInProgress: false,
@@ -284,7 +287,7 @@ export default {
             loading: false,
             noDataText: '',
             noResultsText: '',
-            pagination: this.configuration.pagination,
+            pagination: clone(this.configuration.pagination),
             rowsPerPageItems: [],
             rowsPerPageText: '',
             searching: '',
@@ -528,6 +531,9 @@ export default {
             });
         },
         resetCreateData: function () {
+            if (!this.transport.create.data) {
+                return;
+            }
             var createData = this.transport.create.data.models;
             var defaults = this.transport.create.data.defaults || {};
             for (var index in createData) {

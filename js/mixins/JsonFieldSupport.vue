@@ -5,7 +5,7 @@ import axios from 'axios';
 import randomstring from 'randomstring';
 export default Vue.extend({
     methods: {
-        changeJson: function (value, item, jsonPath, field, urlBuilderFunction) {
+        changeJson: _.debounce(function (value, item, jsonPath, field, urlBuilderFunction) {
             if (field === void 0) { field = 'label'; }
             if (urlBuilderFunction === void 0) { urlBuilderFunction = null; }
             var a = this.$axios || axios;
@@ -27,7 +27,7 @@ export default Vue.extend({
                 _a.path = jsonPath,
                 _a));
             var _a;
-        },
+        }, 500),
         manageJsonInCreation: function (value, models, pathField, randomField, field, path) {
             if (randomField === void 0) { randomField = null; }
             if (field === void 0) { field = 'label'; }
