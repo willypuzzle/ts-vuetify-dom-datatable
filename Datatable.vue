@@ -643,6 +643,9 @@
                 return !f ? "" : f.field || f.value;
             },
             loadDataTablesData() {
+                if (this.transport.read.data){
+                    return this.getDataFromObject(this.transport.read.data);
+                }
                 this.loading = true;
                 return axios.get((this.transport.read.url), {
                     params: this.getParams()
