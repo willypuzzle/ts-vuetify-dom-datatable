@@ -229,7 +229,8 @@
 
     interface TransportRead {
         path?: string;
-        url: string;
+        data?: string;
+        url?: string;
     }
 
     interface TransportMultiDelete {
