@@ -379,7 +379,16 @@
             },
             transport: {
                 type: Object,
-                required: true
+                required: true,
+                default(){
+                    return {
+                        read : {},
+                        create : {},
+                        update : {},
+                        delete : {},
+                        multi_delete : {},
+                    }
+                }
             }
         },
         data(){
