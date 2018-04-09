@@ -271,6 +271,7 @@
         cacheDeleteItem: any;
         checkable: boolean;
         checkCodeErrors: Function;
+        config: any;
         configuration: any;
         creationInProgress: boolean;
         debounceSearchTime: number;
