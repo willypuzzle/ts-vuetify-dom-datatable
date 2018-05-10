@@ -37,22 +37,37 @@
                         <v-icon dark>delete</v-icon>
                     </v-btn>
                     <v-card>
-                        <v-card-title>
+                        <v-card-title :class="dialogStyleObj.title.classes">
                             <span class="headline">
                                 <slot name="delete_title">{{ lang.delete.title }}</slot>
                             </span>
                         </v-card-title>
-                        <v-card-text>
+                        <v-card-text :style="dialogStyleObj.text.style">
                             <slot name="delete_content">
                                 <div v-html="lang.delete.content"></div>
                             </slot>
                         </v-card-text>
                         <slot name="delete_multi_actions">
-                            <v-card-actions>
+                            <v-card-actions :class="dialogStyleObj.actions.classes">
                                 <template v-if="!deletionInProgress">
                                     <v-spacer></v-spacer>
-                                    <v-btn class="blue--text darken-1" flat @click.native="deleteDialog = false">{{ lang.delete.buttons.close }}</v-btn>
-                                    <v-btn class="blue--text darken-1" flat @click="dt_multi_delete();">{{ lang.delete.buttons.confirm }}</v-btn>
+                                    <!-- blue--text darken-1 -->
+                                    <v-btn
+                                            :color="dialogStyleObj.closeButton.color"
+                                            :class="dialogStyleObj.closeButton.classes"
+                                            :flat="dialogStyleObj.closeButton.flat"
+                                            :small="dialogStyleObj.closeButton.small"
+                                            :depressed="dialogStyleObj.closeButton.depressed"
+                                            @click.native="deleteDialog = false"
+                                    >{{ lang.delete.buttons.close }}</v-btn>
+                                    <v-btn
+                                            :color="dialogStyleObj.confirmButton.color"
+                                            :class="dialogStyleObj.confirmButton.classes"
+                                            :flat="dialogStyleObj.confirmButton.flat"
+                                            :small="dialogStyleObj.confirmButton.small"
+                                            :depressed="dialogStyleObj.confirmButton.depressed"
+                                            @click="dt_multi_delete();"
+                                    >{{ lang.delete.buttons.confirm }}</v-btn>
                                 </template>
                                 <template v-else>
                                     <v-progress-circular style="position: absolute; left: calc(50% - 16px); top: calc(50% - 16px)" indeterminate class="primary--text"></v-progress-circular>
@@ -147,22 +162,29 @@
         </v-card>
         <v-dialog v-if="!disableGeneralError" v-model="generalErrorDialog" max-width="600px">
             <v-card>
-                <v-card-title>
+                <v-card-title :class="dialogStyleObj.title.classes">
                     <slot name="general_error_title">
                         <span class="headline">
                             {{ lang.errors.general.title }}
                         </span>
                     </slot>
                 </v-card-title>
-                <v-card-text>
+                <v-card-text :style="dialogStyleObj.text.style">
                     <slot name="general_error_content">
                         {{ lang.errors.general.content }}
                     </slot>
                 </v-card-text>
                 <slot name="delete_actions">
-                    <v-card-actions>
+                    <v-card-actions :class="dialogStyleObj.actions.classes">
                         <v-spacer></v-spacer>
-                        <v-btn class="blue--text darken-1" flat @click.native="generalErrorDialog = false">
+                        <v-btn
+                                :color="dialogStyleObj.closeButton.color"
+                                :class="dialogStyleObj.closeButton.classes"
+                                :flat="dialogStyleObj.closeButton.flat"
+                                :small="dialogStyleObj.closeButton.small"
+                                :depressed="dialogStyleObj.closeButton.depressed"
+                                @click.native="generalErrorDialog = false"
+                        >
                             {{ lang.errors.general.buttons.close }}
                         </v-btn>
                     </v-card-actions>
@@ -171,25 +193,39 @@
         </v-dialog>
         <v-dialog v-model="singleDeleteDialog" persistent max-width="600px">
             <v-card>
-                <v-card-title>
+                <v-card-title :class="dialogStyleObj.title.classes">
                     <slot name="single_delete_title">
                         <span class="headline">
                             {{ lang.single_delete.title }}
                         </span>
                     </slot>
                 </v-card-title>
-                <v-card-text>
+                <v-card-text :style="dialogStyleObj.text.style">
                     <slot name="single_delete_content">
                         <div v-html="lang.single_delete.content"></div>
                     </slot>
                 </v-card-text>
                 <slot name="delete_actions">
-                    <v-card-actions>
+                    <v-card-actions :class="dialogStyleObj.actions.classes">
                         <v-spacer></v-spacer>
-                        <v-btn class="blue--text darken-1" flat @click.native="singleDeleteDialog = false">
+                        <v-btn
+                                :color="dialogStyleObj.closeButton.color"
+                                :class="dialogStyleObj.closeButton.classes"
+                                :flat="dialogStyleObj.closeButton.flat"
+                                :small="dialogStyleObj.closeButton.small"
+                                :depressed="dialogStyleObj.closeButton.depressed"
+                                @click.native="singleDeleteDialog = false"
+                        >
                             {{ lang.single_delete.buttons.close }}
                         </v-btn>
-                        <v-btn class="blue--text darken-1" flat @click="dt_single_delete();">
+                        <v-btn
+                                :color="dialogStyleObj.confirmButton.color"
+                                :class="dialogStyleObj.confirmButton.classes"
+                                :flat="dialogStyleObj.confirmButton.flat"
+                                :small="dialogStyleObj.confirmButton.small"
+                                :depressed="dialogStyleObj.confirmButton.depressed"
+                                @click="dt_single_delete();"
+                        >
                             {{ lang.single_delete.buttons.confirm }}
                         </v-btn>
                     </v-card-actions>
@@ -273,12 +309,17 @@
         checkCodeErrors: Function;
         config: any;
         configuration: any;
+        configureDialogStyle();
+        configureDialogStyleDefault();
+        configureDialogStyleSmileChat();
         creationInProgress: boolean;
         debounceSearchTime: number;
         deleteDialog: boolean;
         deletionInProgress: boolean;
         disableGeneralError: boolean;
         disableDelete: boolean;
+        dialogsStyle: String;
+        dialogStyleObj: any;
         generalErrorDialog: boolean;
         getColumns: Function;
         getDataFromObject: Function;
@@ -329,6 +370,8 @@
             this.rowsPerPageText = this.lang.table.row_per_page_text;
 
             this.resetCreateData();
+
+            this.configureDialogStyle()
         },
         props: {
             add: {
@@ -366,6 +409,10 @@
                 type: Boolean,
                 default: false
             },
+            dialogsStyle: {
+                type: String,
+                default: 'default'
+            },
             headers: {
                 type: Array,
                 required: true
@@ -402,6 +449,7 @@
                 creationInProgress: false,
                 deleteDialog: false,
                 deletionInProgress: false,
+                dialogStyleObj: {},
                 extra: {},
                 generalErrorDialog: false,
                 items: [],
@@ -462,6 +510,74 @@
                 }
 
                 return c;
+            },
+            configureDialogStyle(){
+                switch (this.dialogsStyle){
+                    case 'default':
+                        this.configureDialogStyleDefault()
+                        break;
+                    case 'smile-chat':
+                        this.configureDialogStyleSmileChat()
+                        break;
+                }
+            },
+            configureDialogStyleDefault(){
+                this.dialogStyleObj.title = {
+                    classes: ''
+                }
+
+                this.dialogStyleObj.text = {
+                    style: ''
+                }
+
+                this.dialogStyleObj.actions = {
+                    classes: ''
+                }
+
+                this.dialogStyleObj.closeButton = {
+                    classes: 'blue--text darken-1',
+                    color: '',
+                    flat: true,
+                    small: false,
+                    depressed: false
+                }
+
+                this.dialogStyleObj.confirmButton = {
+                    classes: 'blue--text darken-1',
+                    color: '',
+                    flat: true,
+                    small: false,
+                    depressed: false
+                }
+            },
+            configureDialogStyleSmileChat(){
+                this.dialogStyleObj.title = {
+                    classes: 'title primary white--text pa-3 justify-center'
+                }
+
+                this.dialogStyleObj.text = {
+                    style: 'min-height: 100px;'
+                }
+
+                this.dialogStyleObj.actions = {
+                    classes: 'grey lighten-4'
+                }
+
+                this.dialogStyleObj.closeButton = {
+                    classes: '',
+                    color: 'warning',
+                    flat: false,
+                    small: true,
+                    depressed: true
+                }
+
+                this.dialogStyleObj.confirmButton = {
+                    classes: '',
+                    color: 'success',
+                    flat: false,
+                    small: true,
+                    depressed: true
+                }
             },
             debounceSearch: _.debounce(function (value) {
                 this.searching = value;
