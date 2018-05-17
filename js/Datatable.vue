@@ -25,15 +25,22 @@
                                 <v-btn class="grey  lighten-2" flat small @click.native="addDialog = false;resetCreateData()">{{ lang.add.buttons.close }}</v-btn>
                                 <v-btn class="grey  lighten-2" flat small @click="dt_create">{{ lang.add.buttons.confirm }}</v-btn>
                                 <v-spacer v-if="dialogStyleObj.actions.position != 'right'"></v-spacer>
+                                </v-btn>
+                                <v-btn class="blue--text darken-1" flat @click="dt_create">{{
+                                    lang.add.buttons.confirm }}
+                                </v-btn>
                             </template>
                             <template v-else>
-                                <v-progress-circular style="position: absolute; left: calc(50% - 16px); top: calc(50% - 16px)" indeterminate class="primary--text"></v-progress-circular>
+                                <v-progress-circular
+                                        style="position: absolute; left: calc(50% - 16px); top: calc(50% - 16px)"
+                                        indeterminate class="primary--text"></v-progress-circular>
                             </template>
                         </v-card-actions>
                     </slot>
                 </v-card>
             </v-dialog>
-            <v-dialog v-if="!disableDelete && selected.length > 0" v-model="deleteDialog" persistent max-width="600px">
+            <v-dialog v-if="!disableDelete && selected.length > 0" v-model="deleteDialog" persistent
+                      max-width="600px">
                 <v-btn icon color="error" dark slot="activator">
                     <v-icon dark>delete</v-icon>
                 </v-btn>
@@ -60,7 +67,8 @@
                                         :small="dialogStyleObj.closeButton.small"
                                         :depressed="dialogStyleObj.closeButton.depressed"
                                         @click.native="deleteDialog = false"
-                                >{{ lang.delete.buttons.close }}</v-btn>
+                                >{{ lang.delete.buttons.close }}
+                                </v-btn>
                                 <v-btn
                                         :color="dialogStyleObj.confirmButton.color"
                                         :class="dialogStyleObj.confirmButton.classes"
@@ -68,11 +76,13 @@
                                         :small="dialogStyleObj.confirmButton.small"
                                         :depressed="dialogStyleObj.confirmButton.depressed"
                                         @click="dt_multi_delete();"
-                                >{{ lang.delete.buttons.confirm }}</v-btn>
+                                >{{ lang.delete.buttons.confirm }}
                                 <v-spacer v-if="dialogStyleObj.actions.position != 'right'"></v-spacer>
                             </template>
                             <template v-else>
-                                <v-progress-circular style="position: absolute; left: calc(50% - 16px); top: calc(50% - 16px)" indeterminate class="primary--text"></v-progress-circular>
+                                <v-progress-circular
+                                        style="position: absolute; left: calc(50% - 16px); top: calc(50% - 16px)"
+                                        indeterminate class="primary--text"></v-progress-circular>
                             </template>
                         </v-card-actions>
                     </slot>
@@ -106,7 +116,7 @@
                 :hide-actions="hideActions"
         >
             <template slot="headers" slot-scope="props">
-                <tr class="primary white--text" >
+                <tr class="primary white--text">
                     <th v-if="checkable" width="50px">
                         <v-checkbox
                                 primary
@@ -127,12 +137,13 @@
                             :style="header.style"
                             @click.prevent.stop="sort(header.value, header.sortable !== false)"
                     >
-                        <v-icon dark class="yellow--text accent-4" v-if="header.sortable !== false">arrow_upward</v-icon>
+                        <v-icon dark class="yellow--text accent-4" v-if="header.sortable !== false">arrow_upward
+                        </v-icon>
                         <v-tooltip bottom>
                             <span slot="activator">
                               {{ header.text }}
                             </span>
-                                    <span>
+                            <span>
                               {{ header.text }}
                             </span>
                         </v-tooltip>
@@ -140,25 +151,35 @@
                 </tr>
             </template>
             <template slot="items" slot-scope="props">
-                <tr :active="props.selected" >
-                    <td v-if="checkable">
-                        <v-checkbox
-                                v-if="!props.item.datatable_no_deletable_item"
-                                primary
-                                class="primary--text"
-                                hide-details
-                                v-model="props.selected"
-                        ></v-checkbox>
-                    </td>
-                    <slot
-                            name="columns"
-                            :selected="props.selected || false"
-                            :index="props.index"
-                            :item="props.item"
-                            :edit="dt_updateField"
-                            :delete="!props.item.datatable_no_deletable_item ? dt_delete : null"
-                    ></slot>
-                </tr>
+                <slot
+                        name="tr_columns"
+                        :selected="props.selected || false"
+                        :index="props.index"
+                        :item="props.item"
+                        :checkable="checkable"
+                        :edit="dt_updateField"
+                        :delete="!props.item.datatable_no_deletable_item ? dt_delete : null"
+                >
+                    <tr :active="props.selected">
+                        <td v-if="checkable">
+                            <v-checkbox
+                                    v-if="!props.item.datatable_no_deletable_item"
+                                    primary
+                                    class="primary--text"
+                                    hide-details
+                                    v-model="props.selected"
+                            ></v-checkbox>
+                        </td>
+                        <slot
+                                name="columns"
+                                :selected="props.selected || false"
+                                :index="props.index"
+                                :item="props.item"
+                                :edit="dt_updateField"
+                                :delete="!props.item.datatable_no_deletable_item ? dt_delete : null"
+                        ></slot>
+                    </tr>
+                </slot>
             </template>
         </v-data-table>
     </v-card>
