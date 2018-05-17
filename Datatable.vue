@@ -10,20 +10,21 @@
                 </v-btn>
                 <v-dialog v-if="add" v-model="addDialog" persistent :max-width="addWindowMaxWidth">
                     <v-card>
-                        <v-card-title>
+                        <v-card-title :class="dialogStyleObj.title.classes">
                             <span class="headline">
                                 <slot name="create_title">{{ lang.add.title }}</slot>
                             </span>
                         </v-card-title>
-                        <v-card-text>
+                        <v-card-text class="">
                             <slot name="create_content"></slot>
                         </v-card-text>
                         <slot name="create_actions">
                             <v-card-actions style="position: relative; height: 60px">
                                 <template v-if="!creationInProgress">
-                                    <v-spacer></v-spacer>
-                                    <v-btn class="blue--text darken-1" flat @click.native="addDialog = false;resetCreateData()">{{ lang.add.buttons.close }}</v-btn>
-                                    <v-btn class="blue--text darken-1" flat @click="dt_create">{{ lang.add.buttons.confirm }}</v-btn>
+                                    <v-spacer v-if="dialogStyleObj.actions.position != 'left'"></v-spacer>
+                                    <v-btn class="grey  lighten-2" flat small @click.native="addDialog = false;resetCreateData()">{{ lang.add.buttons.close }}</v-btn>
+                                    <v-btn class="grey  lighten-2" flat small @click="dt_create">{{ lang.add.buttons.confirm }}</v-btn>
+                                    <v-spacer v-if="dialogStyleObj.actions.position != 'right'"></v-spacer>
                                 </template>
                                 <template v-else>
                                     <v-progress-circular style="position: absolute; left: calc(50% - 16px); top: calc(50% - 16px)" indeterminate class="primary--text"></v-progress-circular>
@@ -50,7 +51,7 @@
                         <slot name="delete_multi_actions">
                             <v-card-actions :class="dialogStyleObj.actions.classes">
                                 <template v-if="!deletionInProgress">
-                                    <v-spacer></v-spacer>
+                                    <v-spacer v-if="dialogStyleObj.actions.position != 'left'"></v-spacer>
                                     <!-- blue--text darken-1 -->
                                     <v-btn
                                             :color="dialogStyleObj.closeButton.color"
@@ -68,6 +69,7 @@
                                             :depressed="dialogStyleObj.confirmButton.depressed"
                                             @click="dt_multi_delete();"
                                     >{{ lang.delete.buttons.confirm }}</v-btn>
+                                    <v-spacer v-if="dialogStyleObj.actions.position != 'right'"></v-spacer>
                                 </template>
                                 <template v-else>
                                     <v-progress-circular style="position: absolute; left: calc(50% - 16px); top: calc(50% - 16px)" indeterminate class="primary--text"></v-progress-circular>
@@ -176,7 +178,7 @@
                 </v-card-text>
                 <slot name="delete_actions">
                     <v-card-actions :class="dialogStyleObj.actions.classes">
-                        <v-spacer></v-spacer>
+                        <v-spacer v-if="dialogStyleObj.actions.position != 'left'"></v-spacer>
                         <v-btn
                                 :color="dialogStyleObj.closeButton.color"
                                 :class="dialogStyleObj.closeButton.classes"
@@ -187,6 +189,7 @@
                         >
                             {{ lang.errors.general.buttons.close }}
                         </v-btn>
+                        <v-spacer v-if="dialogStyleObj.actions.position != 'right'"></v-spacer>
                     </v-card-actions>
                 </slot>
             </v-card>
@@ -207,7 +210,7 @@
                 </v-card-text>
                 <slot name="delete_actions">
                     <v-card-actions :class="dialogStyleObj.actions.classes">
-                        <v-spacer></v-spacer>
+                        <v-spacer v-if="dialogStyleObj.actions.position != 'left'"></v-spacer>
                         <v-btn
                                 :color="dialogStyleObj.closeButton.color"
                                 :class="dialogStyleObj.closeButton.classes"
@@ -228,6 +231,7 @@
                         >
                             {{ lang.single_delete.buttons.confirm }}
                         </v-btn>
+                        <v-spacer v-if="dialogStyleObj.actions.position != 'right'"></v-spacer>
                     </v-card-actions>
                 </slot>
             </v-card>
@@ -531,7 +535,8 @@
                 }
 
                 this.dialogStyleObj.actions = {
-                    classes: ''
+                    classes: '',
+                    position: 'right'
                 }
 
                 this.dialogStyleObj.closeButton = {
@@ -552,20 +557,21 @@
             },
             configureDialogStyleSmileChat(){
                 this.dialogStyleObj.title = {
-                    classes: 'title primary white--text pa-3 justify-center'
+                    classes: 'title primary white--text pa-3 justify-center dt-title-uppercase'
                 }
 
                 this.dialogStyleObj.text = {
-                    style: 'min-height: 100px;'
+                    style: 'min-height: 100px; text-align: center !important;'
                 }
 
                 this.dialogStyleObj.actions = {
-                    classes: 'grey lighten-4'
+                    classes: 'pb-3 pt-3',
+                    position: 'center'
                 }
 
                 this.dialogStyleObj.closeButton = {
                     classes: '',
-                    color: 'warning',
+                    color: 'grey lighten-2',
                     flat: false,
                     small: true,
                     depressed: true
@@ -573,7 +579,7 @@
 
                 this.dialogStyleObj.confirmButton = {
                     classes: '',
-                    color: 'success',
+                    color: 'grey lighten-2',
                     flat: false,
                     small: true,
                     depressed: true
