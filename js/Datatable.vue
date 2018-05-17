@@ -25,9 +25,7 @@
                                 <v-btn class="grey  lighten-2" flat small @click.native="addDialog = false;resetCreateData()">{{ lang.add.buttons.close }}</v-btn>
                                 <v-btn class="grey  lighten-2" flat small @click="dt_create">{{ lang.add.buttons.confirm }}</v-btn>
                                 <v-spacer v-if="dialogStyleObj.actions.position != 'right'"></v-spacer>
-                                </v-btn>
-                                <v-btn class="blue--text darken-1" flat @click="dt_create">{{
-                                    lang.add.buttons.confirm }}
+                                <v-btn class="blue--text darken-1" flat @click="dt_create">{{ lang.add.buttons.confirm }}
                                 </v-btn>
                             </template>
                             <template v-else>
@@ -76,7 +74,9 @@
                                         :small="dialogStyleObj.confirmButton.small"
                                         :depressed="dialogStyleObj.confirmButton.depressed"
                                         @click="dt_multi_delete();"
-                                >{{ lang.delete.buttons.confirm }}
+                                >
+                                    {{ lang.delete.buttons.confirm }}
+                                </v-btn>
                                 <v-spacer v-if="dialogStyleObj.actions.position != 'right'"></v-spacer>
                             </template>
                             <template v-else>
