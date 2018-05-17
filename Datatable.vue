@@ -22,17 +22,25 @@
                             <v-card-actions style="position: relative; height: 60px">
                                 <template v-if="!creationInProgress">
                                     <v-spacer></v-spacer>
-                                    <v-btn class="blue--text darken-1" flat @click.native="addDialog = false;resetCreateData()">{{ lang.add.buttons.close }}</v-btn>
-                                    <v-btn class="blue--text darken-1" flat @click="dt_create">{{ lang.add.buttons.confirm }}</v-btn>
+                                    <v-btn class="blue--text darken-1" flat
+                                           @click.native="addDialog = false;resetCreateData()">{{ lang.add.buttons.close
+                                        }}
+                                    </v-btn>
+                                    <v-btn class="blue--text darken-1" flat @click="dt_create">{{
+                                        lang.add.buttons.confirm }}
+                                    </v-btn>
                                 </template>
                                 <template v-else>
-                                    <v-progress-circular style="position: absolute; left: calc(50% - 16px); top: calc(50% - 16px)" indeterminate class="primary--text"></v-progress-circular>
+                                    <v-progress-circular
+                                            style="position: absolute; left: calc(50% - 16px); top: calc(50% - 16px)"
+                                            indeterminate class="primary--text"></v-progress-circular>
                                 </template>
                             </v-card-actions>
                         </slot>
                     </v-card>
                 </v-dialog>
-                <v-dialog v-if="!disableDelete && selected.length > 0" v-model="deleteDialog" persistent max-width="600px">
+                <v-dialog v-if="!disableDelete && selected.length > 0" v-model="deleteDialog" persistent
+                          max-width="600px">
                     <v-btn icon color="error" dark slot="activator">
                         <v-icon dark>delete</v-icon>
                     </v-btn>
@@ -59,7 +67,8 @@
                                             :small="dialogStyleObj.closeButton.small"
                                             :depressed="dialogStyleObj.closeButton.depressed"
                                             @click.native="deleteDialog = false"
-                                    >{{ lang.delete.buttons.close }}</v-btn>
+                                    >{{ lang.delete.buttons.close }}
+                                    </v-btn>
                                     <v-btn
                                             :color="dialogStyleObj.confirmButton.color"
                                             :class="dialogStyleObj.confirmButton.classes"
@@ -67,10 +76,13 @@
                                             :small="dialogStyleObj.confirmButton.small"
                                             :depressed="dialogStyleObj.confirmButton.depressed"
                                             @click="dt_multi_delete();"
-                                    >{{ lang.delete.buttons.confirm }}</v-btn>
+                                    >{{ lang.delete.buttons.confirm }}
+                                    </v-btn>
                                 </template>
                                 <template v-else>
-                                    <v-progress-circular style="position: absolute; left: calc(50% - 16px); top: calc(50% - 16px)" indeterminate class="primary--text"></v-progress-circular>
+                                    <v-progress-circular
+                                            style="position: absolute; left: calc(50% - 16px); top: calc(50% - 16px)"
+                                            indeterminate class="primary--text"></v-progress-circular>
                                 </template>
                             </v-card-actions>
                         </slot>
@@ -104,7 +116,7 @@
                     :hide-actions="hideActions"
             >
                 <template slot="headers" slot-scope="props">
-                    <tr class="primary white--text" >
+                    <tr class="primary white--text">
                         <th v-if="checkable" width="50px">
                             <v-checkbox
                                     primary
@@ -125,12 +137,13 @@
                                 :style="header.style"
                                 @click.prevent.stop="sort(header.value, header.sortable !== false)"
                         >
-                            <v-icon dark class="yellow--text accent-4" v-if="header.sortable !== false">arrow_upward</v-icon>
+                            <v-icon dark class="yellow--text accent-4" v-if="header.sortable !== false">arrow_upward
+                            </v-icon>
                             <v-tooltip bottom>
                                 <span slot="activator">
                                   {{ header.text }}
                                 </span>
-                                        <span>
+                                <span>
                                   {{ header.text }}
                                 </span>
                             </v-tooltip>
@@ -138,25 +151,35 @@
                     </tr>
                 </template>
                 <template slot="items" slot-scope="props">
-                    <tr :active="props.selected" >
-                        <td v-if="checkable">
-                            <v-checkbox
-                                    v-if="!props.item.datatable_no_deletable_item"
-                                    primary
-                                    class="primary--text"
-                                    hide-details
-                                    v-model="props.selected"
-                            ></v-checkbox>
-                        </td>
-                        <slot
-                                name="columns"
-                                :selected="props.selected || false"
-                                :index="props.index"
-                                :item="props.item"
-                                :edit="dt_updateField"
-                                :delete="!props.item.datatable_no_deletable_item ? dt_delete : null"
-                        ></slot>
-                    </tr>
+                    <slot
+                            name="tr_columns"
+                            :selected="props.selected || false"
+                            :index="props.index"
+                            :item="props.item"
+                            :checkable="checkable"
+                            :edit="dt_updateField"
+                            :delete="!props.item.datatable_no_deletable_item ? dt_delete : null"
+                    >
+                        <tr :active="props.selected">
+                            <td v-if="checkable">
+                                <v-checkbox
+                                        v-if="!props.item.datatable_no_deletable_item"
+                                        primary
+                                        class="primary--text"
+                                        hide-details
+                                        v-model="props.selected"
+                                ></v-checkbox>
+                            </td>
+                            <slot
+                                    name="columns"
+                                    :selected="props.selected || false"
+                                    :index="props.index"
+                                    :item="props.item"
+                                    :edit="dt_updateField"
+                                    :delete="!props.item.datatable_no_deletable_item ? dt_delete : null"
+                            ></slot>
+                        </tr>
+                    </slot>
                 </template>
             </v-data-table>
         </v-card>
@@ -236,7 +259,7 @@
 </template>
 
 <script lang="ts">
-    import Vue, { ComponentOptions } from 'vue';
+    import Vue, {ComponentOptions} from 'vue';
     import messages from './i18n/messages';
     import axios, {AxiosStatic} from 'axios'
     import _ from 'lodash'
@@ -260,7 +283,7 @@
     }
 
     interface TransportDelete {
-        url(obj: any) : string;
+        url(obj: any): string;
     }
 
     interface TransportRead {
@@ -274,7 +297,7 @@
     }
 
     interface TransportUpdate {
-        url(obj: any) : string;
+        url(obj: any): string;
     }
 
     interface Transport {
@@ -300,7 +323,7 @@
         width?: string;
     }
 
-    interface DatatableComponent extends Vue{
+    interface DatatableComponent extends Vue {
         add: boolean;
         addDialog: boolean;
         axios: AxiosStatic;
@@ -309,9 +332,13 @@
         checkCodeErrors: Function;
         config: any;
         configuration: any;
+
         configureDialogStyle();
+
         configureDialogStyleDefault();
+
         configureDialogStyleSmileChat();
+
         creationInProgress: boolean;
         debounceSearchTime: number;
         deleteDialog: boolean;
@@ -353,7 +380,7 @@
     }
 
     export default {
-        created(){
+        created() {
             this.noDataText = this.lang.table.no_data_text;
 
             this.noResultsText = this.lang.table.no_results_text;
@@ -364,7 +391,7 @@
                 20,
                 50,
                 100,
-                { text: this.lang.table.row_per_page_items.all, value: -1 }
+                {text: this.lang.table.row_per_page_items.all, value: -1}
             ];
 
             this.rowsPerPageText = this.lang.table.row_per_page_text;
@@ -388,7 +415,7 @@
             },
             configuration: {
                 type: Object,
-                default(){
+                default() {
                     return {
                         pagination: {
                             rowsPerPage: 10,
@@ -428,18 +455,18 @@
             transport: {
                 type: Object,
                 required: true,
-                default(){
+                default() {
                     return {
-                        read : {},
-                        create : {},
-                        update : {},
-                        delete : {},
-                        multi_delete : {},
+                        read: {},
+                        create: {},
+                        update: {},
+                        delete: {},
+                        multi_delete: {},
                     }
                 }
             }
         },
-        data(){
+        data() {
             return {
                 thisObject: this,
                 addDialog: false,
@@ -466,22 +493,22 @@
             }
         },
         computed: {
-            lang(){
+            lang() {
                 let m = messages[this.locale];
-                if(!m){
+                if (!m) {
                     return messages['it'];
                 }
                 return m;
             }
         },
         methods: {
-            activeAdd(){
+            activeAdd() {
                 this.resetCreateData();
                 this.$nextTick(() => {
                     this.addDialog = true;
                 })
             },
-            changeSort(column : Header) {
+            changeSort(column: Header) {
                 let sortBy = column.value;
 
                 if (column.sortable === false)
@@ -498,12 +525,12 @@
                     this.pagination.descending = false;
                 }
             },
-            checkCodeErrors(err, codeErrors){
+            checkCodeErrors(err, codeErrors) {
                 let c = false;
-                if(err.response && codeErrors){
+                if (err.response && codeErrors) {
                     let code = err.response.status;
                     _.each(codeErrors, (el) => {
-                        if(el === code){
+                        if (el === code) {
                             c = true;
                         }
                     })
@@ -511,8 +538,8 @@
 
                 return c;
             },
-            configureDialogStyle(){
-                switch (this.dialogsStyle){
+            configureDialogStyle() {
+                switch (this.dialogsStyle) {
                     case 'default':
                         this.configureDialogStyleDefault()
                         break;
@@ -521,7 +548,7 @@
                         break;
                 }
             },
-            configureDialogStyleDefault(){
+            configureDialogStyleDefault() {
                 this.dialogStyleObj.title = {
                     classes: ''
                 }
@@ -550,7 +577,7 @@
                     depressed: false
                 }
             },
-            configureDialogStyleSmileChat(){
+            configureDialogStyleSmileChat() {
                 this.dialogStyleObj.title = {
                     classes: 'title primary white--text pa-3 justify-center'
                 }
@@ -588,7 +615,7 @@
             dt_create() {
                 let creationFunction = ($validator?) => {
                     let url = this.transport.create.url || false;
-                    if (!url){
+                    if (!url) {
                         return false;
                     }
 
@@ -607,7 +634,7 @@
                         console.log(err)
                         let disableDialog = this.checkCodeErrors(err, _.get(this, 'transport.create.errors.codes.disabled', null));
                         this.generalErrorDialog = !disableDialog && true;
-                        if($validator && err.response && err.response.data){
+                        if ($validator && err.response && err.response.data) {
                             $validator.setErrors(err.response.data);
                         }
                         this.$emit('created-error', err);
@@ -616,15 +643,15 @@
                     });
                 }
 
-                let parent : any = this.$parent;
+                let parent: any = this.$parent;
 
-                if(parent.$validator && parent.$validator.validateAll){
+                if (parent.$validator && parent.$validator.validateAll) {
                     parent.$validator.validateAll().then((response) => {
-                        if(response){
+                        if (response) {
                             creationFunction(parent.$validator);
                         }
                     })
-                }else{
+                } else {
                     creationFunction();
                 }
             },
@@ -633,8 +660,8 @@
                 this.singleDeleteDialog = true;
             },
             dt_multi_delete() {
-                let url : string | boolean = this.transport.multi_delete.url || false;
-                if (!url || this.selected.length === 0){
+                let url: string | boolean = this.transport.multi_delete.url || false;
+                if (!url || this.selected.length === 0) {
                     return false;
                 }
                 this.deletionInProgress = true;
@@ -677,7 +704,7 @@
                     this.loading = false;
                 });
             },
-            dt_updateField(item, field, val, validator? : string) {
+            dt_updateField(item, field, val, validator?: string) {
                 // Bug vuetify
                 if (_.isObject(val) && !_.isArray(val))
                     return false;
@@ -706,15 +733,15 @@
                     });
                 }
 
-                let parent : any = this.$parent;
+                let parent: any = this.$parent;
 
-                if(parent.$validator && parent.$validator.validate && validator){
+                if (parent.$validator && parent.$validator.validate && validator) {
                     parent.$validator.validate(validator).then((response) => {
-                        if(response){
+                        if (response) {
                             updateFunction();
                         }
                     })
-                }else{
+                } else {
                     updateFunction();
                 }
             },
@@ -722,11 +749,12 @@
                 class LocalColumn {
                     public columns: Array<any> | string
                 }
+
                 let c = new LocalColumn();
 
                 c.columns = [];
 
-                let columns : Array<any> = c.columns;
+                let columns: Array<any> = c.columns;
 
                 _.forEach(this.headers, (el) => {
                     columns.push(
@@ -770,7 +798,7 @@
                 return !f ? "" : f.field || f.value;
             },
             loadDataTablesData() {
-                if (this.transport.read.data){
+                if (this.transport.read.data) {
                     return this.getDataFromObject(this.transport.read.data);
                 }
                 this.loading = true;
@@ -781,22 +809,22 @@
                     this.loading = false;
                 });
             },
-            resetCreateData(){
-                if(!this.transport.create.data){
+            resetCreateData() {
+                if (!this.transport.create.data) {
                     return;
                 }
                 let createData = this.transport.create.data.models;
                 let defaults = this.transport.create.data.defaults || {};
-                for(let index in createData){
+                for (let index in createData) {
                     createData[index] = defaults[index] !== undefined ? clone(defaults[index]) : undefined;
                 }
             },
-            sort(value, sortable){
-                if(sortable){
+            sort(value, sortable) {
+                if (sortable) {
                     (<any>this.$refs.datatable).sort(value);
                 }
             },
-            toggle($event){
+            toggle($event) {
                 (<any>this.$refs.datatable).toggle($event)
             }
         },
