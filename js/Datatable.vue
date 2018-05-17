@@ -22,11 +22,27 @@
                         <v-card-actions style="position: relative; height: 60px">
                             <template v-if="!creationInProgress">
                                 <v-spacer v-if="dialogStyleObj.actions.position != 'left'"></v-spacer>
-                                <v-btn class="grey  lighten-2" flat small @click.native="addDialog = false;resetCreateData()">{{ lang.add.buttons.close }}</v-btn>
-                                <v-btn class="grey  lighten-2" flat small @click="dt_create">{{ lang.add.buttons.confirm }}</v-btn>
-                                <v-spacer v-if="dialogStyleObj.actions.position != 'right'"></v-spacer>
-                                <v-btn class="blue--text darken-1" flat @click="dt_create">{{ lang.add.buttons.confirm }}
+                                <v-btn
+                                       :color="dialogStyleObj.addButtons.color"
+                                       :class="dialogStyleObj.addButtons.classes"
+                                       :flat="dialogStyleObj.addButtons.flat"
+                                       :small="dialogStyleObj.addButtons.small"
+                                       :depressed="dialogStyleObj.addButtons.depressed"
+                                       @click.native="addDialog = false;resetCreateData()"
+                                >
+                                    {{ lang.add.buttons.close }}
                                 </v-btn>
+                                <v-btn
+                                        :color="dialogStyleObj.addButtons.color"
+                                        :class="dialogStyleObj.addButtons.classes"
+                                        :flat="dialogStyleObj.addButtons.flat"
+                                        :small="dialogStyleObj.addButtons.small"
+                                        :depressed="dialogStyleObj.addButtons.depressed"
+                                        @click="dt_create"
+                                >
+                                    {{ lang.add.buttons.confirm }}
+                                </v-btn>
+                                <v-spacer v-if="dialogStyleObj.actions.position != 'right'"></v-spacer>
                             </template>
                             <template v-else>
                                 <v-progress-circular
@@ -451,6 +467,13 @@ export default {
                 small: false,
                 depressed: false
             };
+            this.dialogStyleObj.addButtons = {
+                classes: 'blue--text darken-1',
+                color: '',
+                flat: true,
+                small: false,
+                depressed: false
+            };
         },
         configureDialogStyleSmileChat: function () {
             this.dialogStyleObj.title = {
@@ -471,6 +494,13 @@ export default {
                 depressed: true
             };
             this.dialogStyleObj.confirmButton = {
+                classes: '',
+                color: 'grey lighten-2',
+                flat: false,
+                small: true,
+                depressed: true
+            };
+            this.dialogStyleObj.addButtons = {
                 classes: '',
                 color: 'grey lighten-2',
                 flat: false,
