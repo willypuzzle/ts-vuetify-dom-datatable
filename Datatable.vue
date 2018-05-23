@@ -528,6 +528,7 @@
             },
             changeSort(column: Header) {
                 let sortBy = column.value;
+                let sortByJson = column.json;
 
                 if (column.sortable === false)
                     return false;
@@ -540,6 +541,7 @@
 
                 } else {
                     this.pagination.sortBy = sortBy;
+                    this.pagination.sortByJson = sortByJson;
                     this.pagination.descending = false;
                 }
             },
