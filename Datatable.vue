@@ -151,7 +151,7 @@
                                 :key="header.text"
                                 :class="[header.sortable !== false ? 'column sortable' : '', pagination.descending ? 'desc' : 'asc', header.align ? `text-xs-${header.align}` : '', header.value === pagination.sortBy ? 'active' : '', header.class ? header.class : '']"
                                 :style="header.style"
-                                @click.prevent.stop="sort(header.value, header.sortable !== false)"
+                                @click.prevent.stop="sort(header.value, header.sortable !== false, header)"
                         >
                             <v-icon dark class="yellow--text accent-4" v-if="header.sortable !== false">arrow_upward
                             </v-icon>
@@ -857,8 +857,9 @@
                     createData[index] = defaults[index] !== undefined ? clone(defaults[index]) : undefined;
                 }
             },
-            sort(value, sortable) {
+            sort(value, sortable, header) {
                 if (sortable) {
+                    (this as any).changeSort(header)
                     (<any>this.$refs.datatable).sort(value);
                 }
             },
