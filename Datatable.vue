@@ -146,15 +146,13 @@
                         <th
                                 v-for="header in props.headers"
                                 v-if="!header.hidden"
-                                class="white--text"
+                                class="white--text text-xs-left"
                                 :width="header.width || ''"
                                 :key="header.text"
                                 :class="[header.sortable !== false ? 'column sortable' : '', pagination.descending ? 'desc' : 'asc', header.align ? `text-xs-${header.align}` : '', header.value === pagination.sortBy ? 'active' : '', header.class ? header.class : '']"
                                 :style="header.style"
                                 @click.prevent.stop="sort(header.value, header.sortable !== false, header)"
                         >
-                            <v-icon dark class="yellow--text accent-4" v-if="header.sortable !== false">arrow_upward
-                            </v-icon>
                             <v-tooltip bottom>
                                 <span slot="activator">
                                   {{ header.text }}
@@ -163,6 +161,7 @@
                                   {{ header.text }}
                                 </span>
                             </v-tooltip>
+                            <v-icon dark class="yellow--text accent-4" v-if="header.sortable !== false">arrow_upward</v-icon>
                         </th>
                     </tr>
                 </template>
