@@ -845,6 +845,10 @@
                     return this.getDataFromObject(this.transport.read.data);
                 }
                 this.loading = true;
+                this.$emit('urlData',{
+                    url: this.transport.read.url,
+                    params: this.getParams()
+                })
                 return axios.get((this.transport.read.url), {
                     params: this.getParams()
                 }).then(response => {
