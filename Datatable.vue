@@ -106,6 +106,7 @@
                 </v-dialog>
                 <v-spacer></v-spacer>
                 <v-text-field
+                        v-if="!hideSearch"
                         append-icon="search"
                         :label="lang.search.fields.main"
                         single-line
@@ -371,6 +372,7 @@
         getParams: Function;
         headers: Array<Header>;
         hideActions: boolean;
+        hideSearch: boolean;
         items: Array<any>;
         lang: object;
         loadDataTablesData: Function;
@@ -462,6 +464,10 @@
                 required: true
             },
             hideActions: {
+                type: Boolean,
+                default: false
+            },
+            hideSearch: {
                 type: Boolean,
                 default: false
             },
