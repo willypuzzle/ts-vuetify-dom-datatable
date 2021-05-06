@@ -383,6 +383,7 @@
         pagination: any;
         resetCreateData: Function;
         rowsPerPageItems: Array<any>;
+        rowsPerPageItemsProp: Array<any>|null,
         rowsPerPageText: string;
         transport: Transport;
         searching: string;
@@ -404,7 +405,7 @@
 
             this.noResultsText = this.lang.table.no_results_text;
 
-            this.rowsPerPageItems = [
+            this.rowsPerPageItems = this.rowsPerPageItemsProp || [
                 5,
                 10,
                 20,
@@ -487,6 +488,9 @@
                         multi_delete: {},
                     }
                 }
+            },
+            rowsPerPageItemsProp: {
+                default: null
             }
         },
         data() {
